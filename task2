@@ -1,0 +1,74 @@
+using System;
+
+class Program
+{
+    static float Add(float a, float b) => a + b;
+    static float Sub(float a, float b) => a - b;
+    static float Mul(float a, float b) => a * b;
+    static float Div(float a, float b)
+    {
+        if (b == 0)
+        {
+            Console.WriteLine("Error: Division by zero");
+            return float.NaN;
+        }
+        return a / b;
+    }
+
+    static void Main()
+    {
+        float num1, num2;
+        char op;
+        char choice;
+
+        do
+        {
+            Console.Write("Enter first number: ");
+            while (!float.TryParse(Console.ReadLine(), out num1))
+            {
+                Console.WriteLine("A nope input. Please enter a good num: ");
+            }
+
+            Console.Write("Enter operator (+, -, *, /): ");
+            while (!char.TryParse(Console.ReadLine(), out op) || (op != '+' && op != '-' && op != '*' && op != '/'))
+            {
+                Console.WriteLine("Invalid operator. Please enter +, -, *, or /: ");
+            }
+
+            Console.Write("Enter second number: ");
+            while (!float.TryParse(Console.ReadLine(), out num2))
+            {
+                Console.WriteLine("Invalid input. Please enter a valid number: ");
+            }
+
+            switch (op)
+            {
+                case '+':
+                    Console.WriteLine("Result: " + Add(num1, num2));
+                    break;
+                case '-':
+                    Console.WriteLine("Result: " + Sub(num1, num2));
+                    break;
+                case '*':
+                    Console.WriteLine("Result: " + Mul(num1, num2));
+                    break;
+                case '/':
+                    float result = Div(num1, num2);
+                    if (!float.IsNaN(result))
+                    {
+                        Console.WriteLine("Result: " + result);
+                    }
+                    break;
+                default:
+                    Console.WriteLine("Invalid operator!");
+                    break;
+            }
+
+            Console.Write("Do you want to continue? (y/n): ");
+            while (!char.TryParse(Console.ReadLine(), out choice) || (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N'))
+            {
+                Console.WriteLine("Invalid input. Please enter 'y' to continue or 'n' to exit: ");
+            }
+        } while (choice == 'y' || choice == 'Y');
+    }
+}
