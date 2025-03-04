@@ -1,0 +1,96 @@
+using System;
+
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        Gym gym = new Gym(new RegMember(2, 30, "Ahmad", 40), new PremMember(4, 25, "House", 180, 80));
+        gym.Displaymem();
+    }
+}
+
+abstract class Member
+{
+    public int id, age;
+    public string name;
+
+    protected double totalFee; 
+
+    public abstract void CalFee(); 
+
+    public double FullFee => totalFee; 
+
+    public void Display()
+    {
+        Console.WriteLine($"Name: {name}, Age: {age}, ID: {id}, Full Fees: {FullFee}");
+    }
+}
+
+class RegMember : Member
+{
+    private double PlanFee;
+
+    public RegMember(int id, int age, string name, double PlanFee)
+    {
+        this.id = id;
+        this.age = age;
+        this.name = name;
+        this.PlanFee = PlanFee;
+        CalFee();
+    }
+
+    public override void CalFee()
+    {
+        totalFee = 50 + PlanFee;
+    }
+}
+
+class PremMember : Member
+{
+    private double PerTrainFee, DietFee;
+
+    public PremMember(int id, int age, string name, double PerTrainFee, double DietFee)
+    {
+        this.id = id;
+        this.age = age;
+        this.name = name;
+        this.PerTrainFee = PerTrainFee;
+        this.DietFee = DietFee;
+        CalFee();
+    }
+
+    public override void CalFee()
+    {
+        totalFee = 100 + PerTrainFee + DietFee;
+    }
+}
+
+interface IgymMan
+{
+    void AddMem(Member mem);
+    void Displaymem();
+}
+
+class Gym : IgymMan
+{
+    List<Member> dudes = new List<Member>();
+
+    public void AddMem(Member mem)
+    {
+        dudes.Add(mem);
+    }
+
+    public Gym(Member RegMember, Member PremMember)
+    {
+        AddMem(RegMember);
+        AddMem(PremMember);
+    }
+
+    public void Displaymem()
+    {
+        foreach (Member mems in dudes)
+        {
+            Console.WriteLine($"{mems.GetType().Name}: {mems.name}, Age: {mems.age}, ID: {mems.id}, Full Fees: {mems.FullFee}");
+        }
+    }
+}
